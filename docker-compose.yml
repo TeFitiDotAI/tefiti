@@ -1,32 +1,26 @@
-version: "3.8"
+version: "3.9"
 
 services:
   web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/app
+    build:
       context: .
-      dockerfile: Dockerfile  # <-- This must match the actual filename
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     env_file:
       - .env
     depends_on:
       - db
+    volumes:
+      - .:/app
 
   db:
     image: mysql:8.0
-    restart: always
     environment:
-      MYSQL_DATABASE: tefiti_db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: eth::aei
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "3306:3306"
+      MYSQL_DATABASE: tefiti
+      MYSQL_ROOT_PASSWORD: rootpassword
     volumes:
-      - mysql_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
 
 volumes:
-  mysql_data:
+  db_data:
